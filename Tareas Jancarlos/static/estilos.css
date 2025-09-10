@@ -1,0 +1,129 @@
+/* ======= Estilo general ======= */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f6fa;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #000000;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+nav {
+  background-color: #119200;
+  padding: 10px;
+  text-align: center;
+}
+
+nav a {
+  color: white;
+  margin: 0 10px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* ======= Contenedor ======= */
+.container {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
+}
+
+/* ======= Formulario ======= */
+form input[type="text"] {
+  padding: 8px;
+  width: 70%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+form button {
+  padding: 8px 12px;
+  margin-left: 5px;
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #219150;
+}
+
+/* ======= Lista de tareas ======= */
+ul {
+  padding: 0;
+}
+
+ul li {
+  list-style: none;
+  margin-bottom: 15px;   /* espacio entre renglones */
+  padding: 10px;
+  background: #ecf0f1;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ======= Texto de tarea ======= */
+.tarea-completada {
+  text-decoration: line-through;
+  color: gray;
+}
+
+/* ======= Botones como enlaces ======= */
+a.btn {
+  display: inline-block;
+  padding: 6px 10px;
+  margin: 0 2px;
+  background-color: #3498db;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+a.btn:hover {
+  background-color: #2980b9;
+}
+
+a.btn.delete {
+  background-color: #e74c3c;
+}
+
+a.btn.delete:hover {
+  background-color: #c0392b;
+}
+
+a.btn.edit {
+  background-color: #f39c12;
+}
+
+a.btn.edit:hover {
+  background-color: #d68910;
+}
+
+/* ======= Formulario editar ======= */
+form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+form input[type="text"] {
+  flex: 1;
+}
+
