@@ -1,5 +1,10 @@
-from flask import Flask, render_template, request, redirect
-import mysql.connector
+from flask import Flask            # Sirve para crear la aplicación Flask
+from flask import render_template  # Sirve para mostrar páginas HTML (plantillas)
+from flask import request          # Sirve para leer datos enviados desde formularios
+from flask import redirect         # Sirve para redirigir al usuario de una ruta a otra
+from flask import url_for          # Sirve para generar URLs dinámicas
+from flask_mysqldb import MySQL    # Sirve para conectar la base de datos MySQL
+import mysql.connector          #sirve para conectar
 
 app = Flask(__name__)
 
@@ -66,34 +71,6 @@ def estadisticas():
 
     conn.close()
     return render_template("estadisticas.html", total=total, completadas=completadas, pendientes=pendientes)
-
-
-@app.route("/editar/<int:id>", methods=["GET", "POST"])
-def editar(id):
-    conn = get_db_connection()
-    cursor = conn.cursor()
-
-    if request.method == "POST":
-        nueva = request.form.get("descripcion")
-        cursor.execute("UPDATE tareas SET descripcion = %s WHERE id = %s", (nueva, id))
-        conn.commit()
-        conn.close()
-        return redirect("/tareas")
-
-    cursor.execute("SELECT * FROM tareas WHERE id = %s", (id,))
-    tarea = cursor.fetchone()
-    conn.close()
-    return render_template("editar.html", tarea=tarea)
-
-
-@app.route("/eliminar/<int:id>")
-def eliminar(id):
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute("DELETE FROM tareas WHERE id = %s", (id,))
-    conn.commit()
-    conn.close()
-    return redirect("/tareas")
 
 
 if __name__ == "__main__":
