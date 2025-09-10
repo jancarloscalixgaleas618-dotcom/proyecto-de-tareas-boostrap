@@ -1,0 +1,3 @@
+
+pip install Flask Flask-MySQLdb Flask-WTF WTForms Flask-Bootstrap python-dotenv
+
