@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Tareas</title>
+  <link rel="stylesheet" href="/static/estilos.css">
+</head>
+<body>
+<header>
+  <h1>Lista de Tareas</h1>
+  <img src="/static/img/img.png" alt="Portada" width="300">
+</header>
+
+<nav>
+  <a href="/">Inicio</a>
+  <a href="/tareas">Tareas</a>
+  <a href="/acerca">Acerca de</a>
+  <a href="/estadisticas">Estadísticas</a>
+</nav>
+
+<div class="container">
+  <form method="POST">
+    <input type="text" name="descripcion" placeholder="Nueva tarea" required>
+    <button type="submit">Agregar</button>
+    <button type="reset">Cancelar</button>
+  </form>
+
+  <ul>
+  {% for tarea in tareas %}
+    <li>
+      <span class="{% if tarea[2] %}tarea-completada{% endif %}">{{ tarea[1] }}</span>
+      <span style="margin-left: 10px;">
+        {% if not tarea[2] %}
+        <a href="/completar/{{ tarea[0] }}" class="btn">Completar</a>
+        {% endif %}
+        <a href="/editar/{{ tarea[0] }}" class="btn edit"> Editar</a>
+        <a href="/eliminar/{{ tarea[0] }}" class="btn delete"> Eliminar</a>
+
+      </span>
+    </li>
+  {% endfor %}
+  </ul>
+</div>
+</body>
+</html>

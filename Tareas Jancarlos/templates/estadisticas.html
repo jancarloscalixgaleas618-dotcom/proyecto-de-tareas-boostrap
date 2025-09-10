@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Estadísticas</title>
+  <link rel="stylesheet" href="/static/estilos.css">
+</head>
+<body>
+<header>
+  <h1>Estadísticas de mis tareas</h1>
+</header>
+
+<nav>
+  <a href="/">Inicio</a>
+  <a href="/tareas">Tareas</a>
+  <a href="/acerca">Acerca de</a>
+  <a href="/estadisticas">Estadísticas</a>
+</nav>
+
+<div class="container">
+  <p>Total de tareas: {{ total }}</p>
+  <p>Tareas completadas: {{ completadas }}</p>
+  <p>Tareas pendientes: {{ pendientes }}</p>
+</div>
+</body>
+</html>
