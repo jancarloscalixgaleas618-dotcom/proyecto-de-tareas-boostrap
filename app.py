@@ -8,7 +8,9 @@ import mysql.connector          #sirve para conectar
 import os
 
 app = Flask(__name__)
-
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://avnadmin:contraseña@mysql-5e88637-jancarloscalixgaleas618-1764.l.aivencloud.com:12582/defaultdb'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
 
 db_config = {
     'host': os.environ.get('DB_HOST'),
@@ -78,3 +80,4 @@ def estadisticas():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
