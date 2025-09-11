@@ -11,32 +11,18 @@ import os
 
 app = Flask(__name__)
 
-db_config = {
-    'host': os.environ['DB_HOST'],
-    'user': os.environ['DB_USER'],
-    'password': os.environ['DB_PASS'],
-    'database': os.environ['DB_NAME'],
-    'port': int(os.environ['DB_PORT'])
-}
-
-
-app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}"
+# Usa directamente la URL de la base de datos que configuraste en Render
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-# Configuración de mysql.connector para consultas directas
-db_config = {
-    'host': db_host,
-    'user': db_user,
-    'password': db_pass,
-    'database': db_name,
-    'port': int(db_port)
-}
-
-def get_db_connection():
-    conn = mysql.connector.connect(**db_config)
-    return conn
+# Modelo de la tabla tareas
+class Tarea(db.Model):
+    __tablename__ = 'tareas'
+    id = db.Column(db.Integer, primary_key=True)
+    descripcion = db.Column(db.String(255), nullable=False)
+    completada = db.Column(db.Boolean, default=False)
 
 @app.route("/")
 def inicio():
@@ -44,28 +30,22 @@ def inicio():
 
 @app.route("/tareas", methods=["GET", "POST"])
 def tareas():
-    conn = get_db_connection()
-    cursor = conn.cursor()
-
     if request.method == "POST":
         tarea = request.form.get("descripcion")
         if tarea:
-            cursor.execute("INSERT INTO tareas (descripcion) VALUES (%s)", (tarea,))
-            conn.commit()
+            nueva_tarea = Tarea(descripcion=tarea)
+            db.session.add(nueva_tarea)
+            db.session.commit()
         return redirect("/tareas")
 
-    cursor.execute("SELECT * FROM tareas")
-    tareas = cursor.fetchall()
-    conn.close()
+    tareas = Tarea.query.all()
     return render_template("tareas.html", tareas=tareas)
 
 @app.route("/completar/<int:id>")
 def completar(id):
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute("UPDATE tareas SET completada = 1 WHERE id = %s", (id,))
-    conn.commit()
-    conn.close()
+    tarea = Tarea.query.get_or_404(id)
+    tarea.completada = True
+    db.session.commit()
     return redirect("/tareas")
 
 @app.route("/acerca")
@@ -74,21 +54,14 @@ def acerca():
 
 @app.route("/estadisticas")
 def estadisticas():
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT COUNT(*) FROM tareas")
-    total = cursor.fetchone()[0]
-
-    cursor.execute("SELECT COUNT(*) FROM tareas WHERE completada = 1")
-    completadas = cursor.fetchone()[0]
-
+    total = Tarea.query.count()
+    completadas = Tarea.query.filter_by(completada=True).count()
     pendientes = total - completadas
-
-    conn.close()
     return render_template("estadisticas.html", total=total, completadas=completadas, pendientes=pendientes)
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 
 
