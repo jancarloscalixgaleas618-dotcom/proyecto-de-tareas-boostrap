@@ -12,5 +12,11 @@ pip install gunicorn
 
 pip freeze > requirements.txt
 
+Flask
+gunicorn
+psycopg2-binary
+
+
+
 
 
