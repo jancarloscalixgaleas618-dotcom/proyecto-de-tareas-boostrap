@@ -4,6 +4,11 @@ flask-mysqldb
 mysql-connector-python
 gunicorn
 
+Flask
+gunicorn
+psycopg2-binary
+
+
 git add requirements.txt
 git commit -m "Agregar gunicorn para Render"
 git push origin main
@@ -12,9 +17,7 @@ pip install gunicorn
 
 pip freeze > requirements.txt
 
-Flask
-gunicorn
-psycopg2-binary
+
 
 
 
