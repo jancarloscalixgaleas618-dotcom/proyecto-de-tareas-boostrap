@@ -5,31 +5,22 @@ from flask import redirect         # Sirve para redirigir al usuario de una ruta
 from flask import url_for          # Sirve para generar URLs dinámicas
 from flask_mysqldb import MySQL    # Sirve para conectar la base de datos MySQL
 from flask_sqlalchemy import SQLAlchemy
-
-import mysql.connector          #sirve para conectar
+from flask import Flask, render_template, request, redirect
+import mysql.connector
 import os
-
-
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://avnadmin:AVNS_iS1DanfzpzXO2Kgu37R@mysql-5e88637-jancarloscalixgaleas618-1764.l.aivencloud.com:12582/defaultdb'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db = SQLAlchemy(app)
-
-
+# Configuración de la base de datos usando variables de entorno de Render/Aiven
 db_config = {
     'host': os.environ.get('DB_HOST'),
     'user': os.environ.get('DB_USER'),
     'password': os.environ.get('DB_PASS'),
-    'database': os.environ.get('DB_NAME')
+    'database': os.environ.get('DB_NAME'),
+    'port': int(os.environ.get('DB_PORT'))
 }
 
-
-
+# Función para obtener la conexión a la base de datos
 def get_db_connection():
     conn = mysql.connector.connect(**db_config)
     return conn
@@ -68,13 +59,11 @@ def completar(id):
 def acerca():
     return render_template("acerca.html")
 
-
-
-
 @app.route("/estadisticas")
 def estadisticas():
     conn = get_db_connection()
     cursor = conn.cursor()
+
     cursor.execute("SELECT COUNT(*) FROM tareas")
     total = cursor.fetchone()[0]
 
@@ -82,13 +71,16 @@ def estadisticas():
     completadas = cursor.fetchone()[0]
 
     pendientes = total - completadas
-
     conn.close()
+
     return render_template("estadisticas.html", total=total, completadas=completadas, pendientes=pendientes)
 
-
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Usa host 0.0.0.0 y puerto de Render si quieres correrlo en producción
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)
+
+
 
 
 
