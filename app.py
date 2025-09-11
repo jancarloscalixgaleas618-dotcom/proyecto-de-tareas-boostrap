@@ -4,6 +4,8 @@ from flask import request          # Sirve para leer datos enviados desde formul
 from flask import redirect         # Sirve para redirigir al usuario de una ruta a otra
 from flask import url_for          # Sirve para generar URLs dinámicas
 from flask_mysqldb import MySQL    # Sirve para conectar la base de datos MySQL
+from flask_sqlalchemy import SQLAlchemy
+
 import mysql.connector          #sirve para conectar
 import os
 
@@ -87,6 +89,7 @@ def estadisticas():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 
 
