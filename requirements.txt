@@ -4,9 +4,12 @@ flask-mysqldb
 mysql-connector-python
 gunicorn
 
-Flask
-gunicorn
-psycopg2-binary
+Flask==2.3.3
+gunicorn==23.0.0
+psycopg2-binary==2.9.9
+SQLAlchemy==2.0.22
+Flask-SQLAlchemy==3.0.3
+
 
 
 git add requirements.txt
@@ -16,6 +19,7 @@ git push origin main
 pip install gunicorn
 
 pip freeze > requirements.txt
+
 
 
 
