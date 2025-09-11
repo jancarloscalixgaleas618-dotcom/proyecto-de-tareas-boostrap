@@ -11,12 +11,14 @@ import os
 
 app = Flask(__name__)
 
-# Configuración de SQLAlchemy usando variables de entorno (Aiven)
-db_user = os.environ.get('DB_USER', 'avnadmin')
-db_pass = os.environ.get('DB_PASS', 'AVNS_iS1DanfzpzXO2Kgu37R')
-db_host = os.environ.get('DB_HOST', 'mysql-5e88637-jancarloscalixgaleas618-1764.l.aivencloud.com')
-db_port = os.environ.get('DB_PORT', '12582')  # Puerto de Aiven
-db_name = os.environ.get('DB_NAME', 'defaultdb')
+db_config = {
+    'host': os.environ['DB_HOST'],
+    'user': os.environ['DB_USER'],
+    'password': os.environ['DB_PASS'],
+    'database': os.environ['DB_NAME'],
+    'port': int(os.environ['DB_PORT'])
+}
+
 
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -87,6 +89,7 @@ def estadisticas():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 
 
